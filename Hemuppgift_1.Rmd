@@ -1,0 +1,93 @@
+---
+title: "Hemuppgift 1"
+author: 
+  - Emily Deros
+  - Theodor Emanuelsson
+  - Sara Thiringer
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1.1 Förberedelseuppgifter
+
+### a) 
+Vi arbetar med följande modell:
+$$Y(t) = 0.1t + e(t) - 0.4e(t-1) + 0.7e(t-2),$$
+
+där $E[e(t)] = 0$ och $V[e(t)] = \sigma^2$. 
+
+Väntevärdesfunktionen är:
+
+$$
+\begin{aligned}
+E[Y(t)] &= E[0.1t + e(t) - 0.4e(t-1) + 0.7e(t-2)] \\
+&= 0.1E[t] + E[e(t)] - 0.4E[e(t-1)] + 0.7E[e(t-2)] \\
+&= 0.1t + 0 + 0 + 0 \\
+&= 0.1t
+\end{aligned}
+$$
+Som vi kan se är väntevärdet beroende av t, vilket innebär att processen inte är stationär.
+
+Kovariansfunktionen är:
+$$
+\begin{aligned}
+Cov[Y(t), Y(t-k)] &= Cov[0.1t + e(t) - 0.4e(t-1) + 0.7e(t-2), 0.1(t-k) + e(t-k) - 0.4e(t-k-1) + 0.7e(t-k-2)] \\
+&= Cov[e(t), e(t-k)] - 0.4Cov[e(t), e(t-k-1)] + 0.7Cov[e(t), e(t-k-2)] \\
+&\quad - 0.4Cov[e(t-1), e(t-k)] + 0.4^2Cov[e(t-1), e(t-k-1)] - 0.4 \cdot 0.7Cov[e(t-1), e(t-k-2)] \\
+&\quad + 0.7Cov[e(t-2), e(t-k)] - 0.7 \cdot 0.4Cov[e(t-2), e(t-k-1)] + 0.7^2Cov[e(t-2), e(t-k-2)]
+\end{aligned}
+$$
+Det här resulterar i att vi får olika kovariansfunktioner beroende på $k$. Följande gäller:
+
+$$
+Cov[Y(t), Y(t-k)] = \begin{cases}
+0 &\text{if } k < -2 \\[5pt]
+0.7Cov[e(t), e(t-k-2)] &\text{if } k=-2 \\[5pt]
+- 0.4Cov[e(t), e(t-k-1)] - 0.7 \cdot 0.4Cov[e(t-2), e(t-k-1)] &\text{if } k=-1 \\[5pt]
+Cov[e(t), e(t-k)] + 0.4^2Cov[e(t-1), e(t-k-1)] + 0.7^2Cov[e(t-2), e(t-k-2)] &\text{if } k=0 \\[5pt]
+- 0.4Cov[e(t-1), e(t-k)] - 0.7 \cdot 0.4Cov[e(t-2), e(t-k-1)] &\text{if } k=1 \\[5pt]
+0.7Cov[e(t-2), e(t-k)] &\text{if } k=2 \\[5pt]
+0 &\text{if } k > 2 \\
+\end{cases}
+$$
+Givet att $Var[e(t)] = \sigma^2$, får vi följande kovarianstermer:
+
+$$
+Cov[Y(t), Y(t-k)] = \begin{cases}
+0 &\text{if } k < -2 \\[5pt]
+0.7 \sigma^2 &\text{if } k=-2 \text{ eller } k=2 \\[5pt]
+- 0.68\sigma^2 &\text{if } k=-1 \text{ eller } k=1 \\[5pt]
+1.65\sigma^2 &\text{if } k=0 \\[5pt]
+0 &\text{if } k > 2 \\
+\end{cases}
+$$
+Nu ska vi istället undersöka differensbildningen $\nabla Y(t)$. Dess väntevärde är:
+
+$$
+\begin{aligned}
+E[\nabla Y(t)] &= E[Y(t) - Y(t-1)] \\
+&= E[0.1t + e(t) - 0.4e(t-1) + 0.7e(t-2)] - (0.1(t-1) + e(t-1) - 0.4e(t-2) + 0.7e(t-3)] \\
+&= E[0.1t + e(t) - 0.4e(t-1) + 0.7e(t-2)] - 0.1t + 0.1 - e(t-1) + 0.4e(t-2) - 0.7e(t-3)] \\
+&= 0.1 + E[e(t)] - 1.4E[e(t-1)] + 1.1E[e(t-2)] - 0.7E[e(t-3)] \\
+&= 0.1
+\end{aligned}
+$$
+
+Väntevärdesfunktionen är alltså konstant över tiden $t$, vilket är ett av kriterierna för att en process ska vara stationär. Härnäst undersöker vi kovariansfunktionen:
+
+$$
+\begin{aligned}
+Cov[\nabla Y(t)] &= Cov[Y(t) - Y(t-1), Y(t-k) - Y(t-k-1)] \\
+&= Cov[0.1t + e(t) - 0.4e(t-1) + 0.7e(t-2)] - (0.1(t-1) + e(t-1) - 0.4e(t-2) + 0.7e(t-3), \\
+& \qquad 0.1(t-k) + e(t-k) - 0.4e(t-k-1) + 0.7e(t-k-2)] - (0.1(t-k-1) + e(t-k-1) - 0.4e(t-k-2) + 0.7e(t-k-3)] \\
+& = 
+\end{aligned}
+$$
+
+## 2 Trendanalys
+
+
