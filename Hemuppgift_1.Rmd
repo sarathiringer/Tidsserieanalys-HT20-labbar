@@ -82,9 +82,13 @@ Väntevärdesfunktionen är alltså konstant över tiden $t$, vilket är ett av 
 $$
 \begin{aligned}
 Cov[\nabla Y(t)] &= Cov[Y(t) - Y(t-1), Y(t-k) - Y(t-k-1)] \\
-&= Cov[0.1t + e(t) - 0.4e(t-1) + 0.7e(t-2)] - (0.1(t-1) + e(t-1) - 0.4e(t-2) + 0.7e(t-3), \\
-& \qquad 0.1(t-k) + e(t-k) - 0.4e(t-k-1) + 0.7e(t-k-2)] - (0.1(t-k-1) + e(t-k-1) - 0.4e(t-k-2) + 0.7e(t-k-3)] \\
-& = 
+&= Cov[0.1t + e(t) - 0.4e(t-1) + 0.7e(t-2)] - 0.1(t-1) - e(t-1) + 0.4e(t-2) - 0.7e(t-3), \\
+& \qquad 0.1(t-k) + e(t-k) - 0.4e(t-k-1) + 0.7e(t-k-2)] - 0.1(t-k-1) - e(t-k-1) + 0.4e(t-k-2) - 0.7e(t-k-3)] \\
+&= Cov[e(t) - 1.4e(t-1) + 1.1e(t-2) - 0.7e(t-3), e(t-k) - 1.4e(t-k-1) + 1.1e(t-k-2) - 0.7e(t-k-3)] \\
+&= Cov[e(t), e(t-k)] - 1.4Cov[e(t), e(t-k-1)] + 1.1Cov[e(t), e(t-k-2)] - 0.7 Cov[e(t), e(t-k-3)] \\
+& \quad - 1.4Cov[e(t-1), e(t-k)] + 1.4^2Cov[e(t-1), e(t-k-1)] - 1.4 \cdot 1.1Cov[e(t-1), e(t-k-2)] + 1.4 \cdot 0.7 Cov[e(t-1), e(t-k-3)] \\
+& \quad + 1.1Cov[e(t-2), e(t-k)] - 1.1 \cdot 1.4 Cov[e(t-2), e(t-k-1)] + 1.1 \cdot 1.1 Cov[e(t-2), e(t-k-2)] - 1.1 \cdot 0.7 Cov[e(t-2), e(t-k-3)] \\
+& \quad - 0.7Cov[e(t-3), e(t-k)] + 0.7 \cdot 1.4 Cov[e(t-3), e(t-k-1)] - 0.7 \cdot 1.1 Cov[e(t-3), e(t-k-2)] + 0.7^2Cov[e(t-3), e(t-k-3)] \\
 \end{aligned}
 $$
 
