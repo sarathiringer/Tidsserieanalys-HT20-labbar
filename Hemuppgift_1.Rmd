@@ -125,4 +125,8 @@ Av detta kan vi dra slutsatsen att kovariansen enbart påverkas av tidslaggen $k
 
 ## 2 Trendanalys
 
+I följande avsnitt kommer vi att undersöka två datamaterial och försöka identifiera de underliggande trenderna. Data material vi kommer att arbeta med är `wages` och `beersales`.
+
+### Linjär trendmodell
+
 
