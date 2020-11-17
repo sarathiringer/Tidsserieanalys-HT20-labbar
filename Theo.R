@@ -50,7 +50,11 @@ har. <- harmonic(beersales, 1)
 model4 <- lm(beersales ~ har.)
 summary(model4)
 
+<<<<<<< HEAD
 plot(ts(fitted(model4), freq = 12, start=c(1975, 1)),
+=======
+plot(ts(fitted(model4), freq = 12, start=c(1975,1)),
+>>>>>>> 7474d857c7dca501e63790dd3636ade02b67763d
      ylab = "Beersales", type = "l",
      ylim = range(c(fitted(model4), beersales))); points(beersales)
 
@@ -60,25 +64,32 @@ plot(residuals(model4))
 acf(beersales)
 acf(residuals(model4))
 
+<<<<<<< HEAD
 ###--------------
 # Mix modell
 ###--------------
 
 # Beersales med cosinus och linjär trend multipel
 
+=======
+>>>>>>> 7474d857c7dca501e63790dd3636ade02b67763d
 model5 <- lm(beersales~ har. + time(beersales) + I(time(beersales)^2))
 summary(model5)
 acf(residuals(model5))
 
+<<<<<<< HEAD
 plot(ts(fitted(model5), freq = 12, start=c(1975, 1)),
      ylab = "Beersales", type = "l",
      ylim = range(c(fitted(model5), beersales))); points(beersales)
 # Modellen mkt bättre
 
+=======
+>>>>>>> 7474d857c7dca501e63790dd3636ade02b67763d
 ###--------------
 # 3 Sumulering av ARMA(p,q)-processer
 ###--------------
 
+<<<<<<< HEAD
 
 ### 3.2 AR(1) och MA(1)
 # Koefficient val: 0.9
@@ -172,6 +183,26 @@ ARMAacf(ar=c(-1, -0.5), lag.max = 10)
 
 
 
+=======
+# Beta1 = 0.1 , Beta2 = -0.1
+AR1_pos <- arima.sim(model = list(ar=c(0.5)), n= 400, sd = 1)
+AR1_neg <- arima.sim(model = list(ar=c(-0.5)), n= 400, sd = 1)
+
+plot(AR1_pos)
+plot(AR1_neg)
+
+MA1_pos <- arima.sim(model = list(ma=-c(0.5)), n= 400, sd = 1)
+MA1_neg <- arima.sim(model = list(ma=-c(-0.5)), n= 400, sd = 1)
+
+plot(MA1_pos)
+plot(MA1_neg)
+
+acf(AR1_pos)
+acf(AR1_neg)
+
+acf(MA1_pos)
+acf(MA1_neg)
+>>>>>>> 7474d857c7dca501e63790dd3636ade02b67763d
 
 
 
