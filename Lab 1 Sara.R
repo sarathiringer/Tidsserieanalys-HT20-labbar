@@ -16,12 +16,16 @@ mean(beersales)
 time(wages)
 
 # Linjär modell
-lin_mod_wages <- lm(wages ~ time(wages) + I(time(wages)^2))
-summary(lin_mod_wages)
-Xt <- residuals(lin_mod_wages)
-qqnorm(Xt)
-acf(Xt)
+lm_wages <- lm(wages ~ time(wages) + I(time(wages)^2))
+summary(lm_wages)
+Xt <- residuals(lm_wages)
+par(mfrow=c(2,2))
 acf(wages)
+acf(Xt)
+qqnorm(wages)
+qqnorm(Xt)
+
+
 pacf()
 
 # Säsongsmodell

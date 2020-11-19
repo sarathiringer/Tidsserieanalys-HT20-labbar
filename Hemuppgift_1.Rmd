@@ -5,11 +5,32 @@ author:
   - Theodor Emanuelsson
   - Sara Thiringer
 date: "`r Sys.Date()`"
-output: pdf_document
+toc: false
+link-citations: yes
+linkcolor: blue
+numbersections: false
+indent: false
+csl: apa.csl
+output:
+  bookdown::pdf_document2: default
+header-includes: |
+  \usepackage{setspace}\onehalfspacing
+  \usepackage{float}
+  \floatplacement{figure}{H}
+  \usepackage{amsmath}
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = "center",
+  fig.width = 3.0,
+  fig.height = 2.5)
+library(TSA)
+data(wages)
+data(beersales)
 ```
 
 ## 1.1 Förberedelseuppgifter
@@ -121,12 +142,132 @@ Cov[\nabla Y(t), \nabla Y(t-k)] = \begin{cases}
 $$
 Av detta kan vi dra slutsatsen att kovariansen enbart påverkas av tidslaggen $k$, och inte tiden $t$ i sig. Därmed är den differentierade processen $\nabla Y(t)$ en stationär process.
 
-### b)
-
 ## 2 Trendanalys
 
 I följande avsnitt kommer vi att undersöka två datamaterial och försöka identifiera de underliggande trenderna. Data material vi kommer att arbeta med är `wages` och `beersales`.
 
 ### Linjär trendmodell
 
+En linjär trendmodell har formen $Y(t) = \mu (t) + X(t)$, där $\mu (t) = \beta_0 + \beta_1t + \beta_2t^2$ kan användas för att avtrendifiera datamaterial som har en väntevärdefunktion som ökar med tiden. I det här fallet använder vi oss både av en linjär och en kvadratisk term i vår modell. Vi ska nu anpassa den till de två datamaterialen.
 
+#### Wages
+
+Med följande kod kan vi konstruera en linjär trendmodell och undersöka dess residualer och autokorrelationsfunktion för att se om den passar `wages``.
+
+```{r lmwages, fig.cap = 'Autokorrelations- och normalkvantilplottar för linjär modell av wages samt residualerna Xt.', fig.width=6.0, fig.height=4.5}
+lm_wages <- lm(wages ~ time(wages) + I(time(wages)^2))
+Xt <- residuals(lm_wages)
+par(mfrow=c(2,2))
+acf(wages)
+acf(Xt)
+qqnorm(wages)
+qqnorm(Xt)
+```
+
+Som vi kan se i diagrammet längst upp till höger återstår viss autokorrelation fortfarande bland residualerna. Detta tyder på att modellen inte passar fullt ut. Vi kan dock konstatera att residualerna följer en normalfördelning hyfsat bra, vilket tyder på ett bra modellval.
+
+#### Beersales
+
+På liknande sätt kan vi nu undersöka om en linjär trendmodell passar `beersales`. 
+
+```{r lmbeersales, echo = FALSE, fig.cap='Autokorrelations- och normalkvantilplottar för linjär modell av beersales samt residualerna Xt.', fig.width=6.0, fig.height=4.5}
+lm_beersales <- lm(beersales ~ time(beersales) + I(time(beersales)^2))
+Xt <- residuals(lm_beersales)
+par(mfrow=c(2,2))
+acf(beersales)
+acf(Xt)
+qqnorm(beersales)
+qqnorm(Xt)
+```
+I figuren ovan framgår att en linjär modell passar datamaterialet väldigt dåligt. Det kan vi se eftersom väldigt mycket autokorrelation kvarstår trots vårt försök att "avtrendifiera" materialet genom modellvalet. Dessutom följer residualerna inte alls en normalfördelning. Vi kan direkt se i residualerna att de har en mer vågig form och således antagligen bättre avtrendifieras av en cyklisk modell av något slag.
+
+### Säsongsmodell
+
+En säsongsmodell är precis vad namnet indikerar - en modell som kan beskriva en hur ett datamaterial varierar över säsonger, till exempel månadsvis. Ett klassiskt och enkelt exempel på där det passar bra är temperatur. Med hjälp av funktionen `season` kan vi enkelt undersöka om en modell på den här formen, $Y(t) = \beta_i + X(t)$ - där $\beta_i$ är ett säsongsmedelvärde för säsongen $i$, passar materialen. 
+
+#### Wages
+
+Nedan konstruerar vi säsongsmodellen för wages.
+
+```{r seasonwages}
+# No intercept
+month.<-season(wages)
+season_wages <-lm(wages~month.)
+```
+
+```{r seasonwagesplots, echo = FALSE, fig.cap='Autokorrelations- och normalkvantilplottar för residualerna Xt från säsongsmodell av wages.', fig.width=6.0, fig.height=3}
+Xt <- residuals(season_wages)
+par(mfrow=c(1,2))
+acf(Xt)
+qqnorm(Xt)
+```
+
+Då både mycket autokorrelation återstår och residualerna uppvisar ett väldigt dåligt mönster i relation till en normalfördelning kan vi konstatera att säsongsmodellen inte passar datan i wages särskilt bra.
+
+#### Beersales
+
+Vidare kan vi tänka oss att modellen passar bättre för `beersales`, som ser ut att ha något av ett säsongsmönster i sig.
+
+```{r seasonbeersales, echo = FALSE, fig.cap='Autokorrelations- och normalkvantilplottar för residualerna Xt från säsongsmodell av beersales.', fig.width=6.0, fig.height=3}
+month.bs <- season(beersales)
+# No intercept
+season_beersales <- lm(beersales~month.bs)
+Xt <- residuals(season_beersales)
+par(mfrow=c(1,2))
+acf(Xt)
+qqnorm(Xt)
+```
+Med en säsongsmodell anpassad till beersales får vi en relativt bra fördelning på residualerna. Mycket autokorrelation kvarstår dock. Härnäst ska vi därför undersöka om en periodisk modell kan passa datamaterial bättre.
+
+### Periodisk modell
+
+En periodisk modell på formen $Y(t) = \mu (t) + X(t)$, där $\mu(t) = \beta_0 + \beta_1 cos(2\pi ft) + \beta_2 sin(2\pi ft)$ kan prövas på materialet med hjälp av funktionen `harmonic`.
+
+#### Wages
+
+Vi börjar med att anpassa modellen till lönedatan med hjälp av nedanstående kod.
+
+```{r harwages}
+har. <- harmonic(wages, 1)
+har_wages <- lm(wages ~ har.)
+```
+
+```{r harwagesplots, echo = FALSE, fig.cap='Autokorrelations- och normalkvantilplottar för residualerna Xt från periodisk modell av wages.', fig.width=6.0, fig.height=3}
+Xt <- residuals(har_wages)
+par(mfrow=c(1,2))
+acf(Xt)
+qqnorm(Xt)
+```
+
+I figuren ovan kan vi snabbt konstatera att autokorrelationen kvarstår i residualerna samt att de inte är normalfördelade. Det är inte särskilt förvånande då materialet inte heller sett ut att ha en harmonisk-periodisk trend.
+
+#### Beersales
+
+I nedanstående figur kan vi se resultatet för residualerna efter att ha anpassat den periodiska modellen till `beersales`.
+
+```{r harbeersales, echo = FALSE, fig.cap='Autokorrelations- och normalkvantilplottar för residualerna Xt från periodisk av beersales.', fig.width=6.0, fig.height=3}
+har. <- harmonic(beersales, 1)
+har_beersales <- lm(beersales ~ har.)
+Xt <- residuals(har_beersales)
+par(mfrow=c(1,2))
+acf(Xt)
+qqnorm(Xt)
+```
+I det här fallet följer residualerna en normalfördelning på ett tillfredställande sätt, men mycket autokorrelation kvarstår. Kanske kan istället en kombination av de testade modellerna passa det här materialet?
+
+### Kombination
+
+I fallet med `wages` kan vi konstatera att en linjär modell verkar passa material bäst, även om en del autokorrelation fortfarande kvarstår. För `beersales` har ingen av de prövade modellerna passat särskilt bra. Därför provar vi nu en kombination av de föreslagna modellerna för att se om vi kan få fram en modell som på ett tillfredställande sätt kan avtrendifierade materialet. Nedan har testat modellen $Y(t) = \mu (t) + X(t)$, där $\mu(t) = \beta_0 + \beta_1 cos(2\pi ft) + \beta_2 sin(2\pi ft) + \beta_3 t + \beta_4 t^2$.
+
+```{r combmod}
+har. <- harmonic(beersales, 1)
+model <- lm(beersales~ har. + time(beersales) + I(time(beersales)^2))
+Xt <- residuals(model)
+summary(model)
+```
+
+```{r combplot, echo = FALSE, fig.cap='Autokorrelations- och normalkvantilplottar för residualerna Xt från en kombination av linjär och periodisk modell av beersales.', fig.width=6.0, fig.height=3}
+par(mfrow=c(1,2))
+acf(Xt)
+qqnorm(Xt)
+```
