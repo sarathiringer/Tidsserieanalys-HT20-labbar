@@ -78,4 +78,42 @@ ARMAacf(ma=-c(value_ma))
 ccf(sim_ar, sim_ma)
 
 # 4
-diff()
+# Diff wages
+## LINJÄR
+delta <- diff(wages, lag = 1)
+acf(delta)
+
+delta2 <- diff(wages, lag = 1, differences = 2)
+acf(delta2)
+
+delta3 <- diff(wages, lag = 1, differences = 3)
+acf(delta3)
+
+model6 <- lm(delta ~ time(delta) + I(time(delta)^2))
+summary(model6)
+
+acf(delta)
+acf(residuals(model6))
+qqnorm(residuals(model6))
+
+### COSINE
+har.W <- harmonic(delta, 1)
+model7 <- lm(delta ~ har.W)
+summary(model7)
+acf(residuals(model7))
+qqnorm(residuals(model7))
+
+## SEASON
+
+season.W <- season(delta)
+model8 <- lm(delta ~ season.W)
+summary(model8)
+acf(residuals(model8))
+qqnorm(residuals(model8))
+
+## COMBINATION
+
+model9 <- lm(delta ~ har.W + time(delta) + I(time(delta)^2))
+summary(model9)
+acf(residuals(model9))
+qqnorm(residuals(model9))
