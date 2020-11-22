@@ -616,7 +616,7 @@ I figur \@ref(fig:diffplot) kan vi se att mycket av autokorrelationen har försv
 
 #### Linjär modell
 
-Vi börjar med att anpassa $\nabla Y_{t}$ till en linjär modell med formen $\nabla Y(t) = \mu (t) + X(t)$, där $\mu (t) = \beta_0 + \beta_1t + \beta_2t^2$. Detta ger inga signifikanta koefficienter. I figur \@ref(fig:lmnabla) kan vi se att autokorrelationen inte förändras avsevärt och att residualerna inte uppvisar en normalfördelning.
+Vi börjar med att anpassa $\nabla Y_{t}$ till en linjär modell med formen $\nabla Y(t) = \mu (t) + X(t)$, där $\mu (t) = \beta_0 + \beta_1t + \beta_2t^2$. Detta ger inga signifikanta koefficienter. Men i figur \@ref(fig:lmnabla) kan vi se att jämfört med den tidigare linjära modellen från uppgift 2 så har autokorrelationen förbättrats avsevärt men residualerna följer normalfördelningen lite sämre.
 
 ```{r lmnabladef}
 lm_nabla <- lm(nabla ~ time(nabla) + I(time(nabla)^2))
@@ -644,7 +644,7 @@ acf(residuals(season_nabla))
 qqnorm(residuals(season_nabla))
 ```
 
-I figur \@ref(fig:seasonnabla) kan vi se att autokorrelationen inte förbättras ytterligare men att residualerna inte uppvisar en normalfördelning.
+I figur \@ref(fig:seasonnabla) kan vi se att autokorrelationen nu förbättras ytterligare jämfört med innan differensbildningen och att residualerna nu är mycket mer normalfördelade.
 
 #### Periodisk modell
 
@@ -662,4 +662,10 @@ acf(residuals(har_nabla))
 qqnorm(residuals(har_nabla))
 ```
 
-I figur \@ref(fig:harnabla) kan vi se att autokorrelationen inte förändras avsevärt och att residualerna inte uppvisar en normalfördelning.
+I figur \@ref(fig:harnabla) kan vi se att autokorrelationen återigen blivit bättre efter differensbildningen och att residualerna åtminstone är mer normalfördelade än innan.
+
+#### Slutsats
+
+Vi har nu återigen applicerat de tre modellerna (Linjär, säsong & periodisk modell) på datamaterialet ”Wages”, men denna gång baserat på den första differensbildningen. Genom att jämföra ACF-diagrammen för respektive modell (jämför fig. 1 med fig. 34 för linjär modell, fig. 3 med fig. 35 för säsongsmodell samt fig. 5 med fig. 36 för periodisk modell) kan vi se att autokorrelationen har minskat markant för samtliga tre modeller. Residualerna för säsongsmodellen och periodiska modellen följer även normalfördelningen bättre efter att ha kombinerats med första differensbildningen. Residualerna för den linjära modellen följer dock inte normalfördelningen lika bra som innan den kombinerades med differensbildningen, men kan fortfarande anses approximativt normalfördelade.
+
+Det är därmed tydligt att en avtrendifiering av tidsserien med hjälp av differensbildning är att föredra då den första differensbildningen av tidsseriemodellen inte längre uppvisar tydlig autokorrelation. Vi anser därför att tidsdifferensbildning är den teknik som bäst plockar fram den stationära slumpkomponenten vilket också är synligt för alla de tre modeller som tillämpats.
