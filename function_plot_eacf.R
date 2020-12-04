@@ -23,5 +23,5 @@ plot_eacf <- function(input_data, process ='') {
           axis.title = element_text(size = 16),
           axis.text = element_text(size = 12)) +
     scale_fill_manual(values = c('#FFFFFF', '#808080')) +
-    labs(title = paste0(process, 'with n = ', length(input_data)))
+    labs(title = paste0('EACF for ', process, ' with n = ', length(input_data)))
 }
