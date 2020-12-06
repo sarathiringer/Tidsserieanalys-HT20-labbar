@@ -1,0 +1,6 @@
+"0","month.bs <- season(beersales)"
+"0","# No intercept"
+"0","season_beersales <- lm(beersales~month.bs)"
+"0","Xt <- residuals(season_beersales)"
+"0","par(mfrow=c(1,2))"
+"0","acf(Xt)"

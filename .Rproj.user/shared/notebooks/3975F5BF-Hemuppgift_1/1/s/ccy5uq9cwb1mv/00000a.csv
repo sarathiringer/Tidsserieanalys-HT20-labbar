@@ -1,0 +1,4 @@
+"0","lm_wages <- lm(wages ~ time(wages) + I(time(wages)^2))"
+"0","Xt <- residuals(lm_wages)"
+"0","par(mfrow=c(2,2))"
+"0","acf(wages)"

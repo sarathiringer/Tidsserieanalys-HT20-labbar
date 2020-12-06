@@ -1,0 +1,2 @@
+"0","har. <- harmonic(wages, 1)"
+"0","har_wages <- lm(wages ~ har.)"

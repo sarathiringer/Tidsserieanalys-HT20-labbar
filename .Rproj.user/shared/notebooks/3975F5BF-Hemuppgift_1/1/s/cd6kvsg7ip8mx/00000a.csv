@@ -1,0 +1,5 @@
+"0","har. <- harmonic(beersales, 1)"
+"0","har_beersales <- lm(beersales ~ har.)"
+"0","Xt <- residuals(har_beersales)"
+"0","par(mfrow=c(1,2))"
+"0","acf(Xt)"

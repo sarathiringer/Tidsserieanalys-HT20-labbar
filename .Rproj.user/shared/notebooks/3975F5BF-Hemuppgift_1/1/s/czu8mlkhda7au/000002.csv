@@ -1,0 +1,3 @@
+"0","# No intercept"
+"0","month.<-season(wages)"
+"0","season_wages <-lm(wages~month.)"

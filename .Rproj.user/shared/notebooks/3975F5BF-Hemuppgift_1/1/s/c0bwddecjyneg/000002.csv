@@ -1,0 +1,2 @@
+"0","AR1_phi0.9 <- arima.sim(model = list(ar=c(0.9)), n= 400, sd = 1)"
+"0","AR1_neg <- arima.sim(model = list(ar=c(-0.9)), n= 400, sd = 1)"

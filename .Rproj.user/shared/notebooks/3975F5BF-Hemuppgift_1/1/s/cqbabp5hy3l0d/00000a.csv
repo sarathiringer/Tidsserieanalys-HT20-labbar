@@ -1,0 +1,4 @@
+"0","lm_beersales <- lm(beersales ~ time(beersales) + I(time(beersales)^2))"
+"0","Xt <- residuals(lm_beersales)"
+"0","par(mfrow=c(2,2))"
+"0","acf(beersales)"
