@@ -2,7 +2,7 @@ library(ggplot2)
 
 # Function to plot EACF
 
-plot_eacf <- function(input_data, process ='') {
+plot_eacf <- function(input_data, process = 'process') {
   eacf_data <- eacf(input_data)$symbol
   
   data <- expand.grid(AR = as.factor(seq(from = 0, to = nrow(eacf_data)-1, by = 1)),
