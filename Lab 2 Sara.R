@@ -107,13 +107,14 @@ data_ML <- data.frame(Method = rep('ML', 3),
 # Plot
 data_both <- rbind(data_MK, data_ML)
 
-ggplot(data_both, aes(x = n, y = coef, col = Method)) +
-  geom_point(size = 2, alpha = 0.6) +
-  geom_errorbar(aes(ymin = coef - se * 1.96, ymax = coef + se * 1.96), width = 0.1, alpha = 0.6) +
-  geom_text(data = data_MK, aes(label = round(coef, 3)), nudge_x = 0.2, nudge_y = 0.05, show.legend = FALSE) +
-  geom_text(data = data_ML, aes(label = round(coef, 3)), nudge_x = 0.2, nudge_y = -0.05, show.legend = FALSE) +
+ggplot(data_both, aes(x = n, y = coef)) +
+  geom_point(size = 2) +
+  geom_errorbar(aes(ymin = coef - se * 1.96, ymax = coef + se * 1.96), width = 0.2) +
+  geom_text(data = data_both, aes(label = round(coef, 3)), nudge_x = 0.3) +
   scale_y_continuous(limits = c(0, 1)) +
-  labs(title = 'MK- och ML-skattningar för AR(1)')
+  geom_hline(yintercept = 0.7, linetype = 'dashed', col = '#666666', alpha = 0.6) +
+  labs(title = 'MK- och ML-skattningar för AR(1)') +
+  facet_wrap(~Method)
 
 
 # MA(1)
@@ -143,13 +144,14 @@ data_ML <- data.frame(Method = rep('ML', 3),
 # Plot
 data_both <- rbind(data_MK, data_ML)
 
-ggplot(data_both, aes(x = n, y = coef, col = Method)) +
-  geom_point(size = 2, alpha = 0.6) +
-  geom_errorbar(aes(ymin = coef - se * 1.96, ymax = coef + se * 1.96), width = 0.2, alpha = 0.6) +
-  geom_text(data = data_MK, aes(label = round(coef, 3)), nudge_x = 0.2, nudge_y = 0.05, show.legend = FALSE) +
-  geom_text(data = data_ML, aes(label = round(coef, 3)), nudge_x = 0.2, nudge_y = -0.05, show.legend = FALSE) +
+ggplot(data_both, aes(x = n, y = coef)) +
+  geom_point(size = 2) +
+  geom_errorbar(aes(ymin = coef - se * 1.96, ymax = coef + se * 1.96), width = 0.2) +
+  geom_text(data = data_both, aes(label = round(coef, 3)), nudge_x = 0.3) +
   scale_y_continuous(limits = c(0, 1)) +
-  labs(title = 'MK- och ML-skattningar för MA(1)')
+  geom_hline(yintercept = 0.7, linetype = 'dashed', col = '#666666', alpha = 0.6) +
+  labs(title = 'MK- och ML-skattningar för MA(1)') +
+  facet_wrap(~Method)
 
 
 # ARMA(1,1)
@@ -179,11 +181,12 @@ data_ML <- data.frame(Method = rep('ML', 3),
 # Plot
 data_both <- rbind(data_MK, data_ML)
 
-ggplot(data_both, aes(x = n, y = coef, col = Method)) +
-  geom_point(size = 2, alpha = 0.6) +
-  geom_errorbar(aes(ymin = coef - se * 1.96, ymax = coef + se * 1.96), width = 0.2, alpha = 0.6) +
-  geom_text(data = data_MK, aes(label = round(coef, 3)), nudge_x = 0.2, nudge_y = 0.05, show.legend = FALSE) +
-  geom_text(data = data_ML, aes(label = round(coef, 3)), nudge_x = 0.2, nudge_y = -0.05, show.legend = FALSE) +
+ggplot(data_both, aes(x = n, y = coef)) +
+  geom_point(size = 2) +
+  geom_errorbar(aes(ymin = coef - se * 1.96, ymax = coef + se * 1.96), width = 0.2) +
+  geom_text(data = data_both, aes(label = round(coef, 3)), nudge_x = 0.3) +
   scale_y_continuous(limits = c(0, 1)) +
-  labs(title = 'MK- och ML-skattningar för ARMA(1,1)')
+  geom_hline(yintercept = 0.7, linetype = 'dashed', col = '#666666', alpha = 0.6) +
+  labs(title = 'MK- och ML-skattningar för ARMA(1,1)') +
+  facet_wrap(~Method)
        
