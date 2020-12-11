@@ -12,16 +12,17 @@ plot_eacf <- function(input_data, process = 'process') {
   
   data$values <- as.factor(ifelse(as.vector(eacf_data) == 'x', 1, 0))
   
-  ggplot(data, aes(x = MA, y = AR, fill = values)) +
+  p <- ggplot(data, aes(x = MA, y = AR, fill = values)) +
     geom_tile() +
     geom_text(aes(label = symbols)) +
     scale_x_discrete(position = 'top') +
     scale_y_discrete(limits = rev(levels(data$AR))) +
     theme(legend.position = 'none', 
           panel.background = element_blank(), 
-          plot.title = element_text(hjust = 0.5, size = 18),
-          axis.title = element_text(size = 16),
-          axis.text = element_text(size = 12)) +
+          plot.title = element_text(hjust = 0.5)) +
     scale_fill_manual(values = c('#FFFFFF', '#808080')) +
     labs(title = paste0('EACF for ', process, ' with n = ', length(input_data)))
+  
+  p
 }
+
